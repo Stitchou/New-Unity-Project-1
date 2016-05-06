@@ -125,14 +125,14 @@ public class MyFirstScript : MonoBehaviour {
                 Transform t = targetTransforms[i].GetComponent<Transform>();
                 c.TrainingExemples[i * c.NbInputs] = t.position.x;
                 c.TrainingExemples[i * c.NbInputs + 1] = t.position.z;
-                c.ExpectedResults[i] = 1.0;
+                c.ExpectedResults[i] = 1;
             }
             if (mr.material.color == blueMat.color)
             {
                 Transform t = targetTransforms[i].GetComponent<Transform>();
                 c.TrainingExemples[i * c.NbInputs] = t.position.x;
                 c.TrainingExemples[i * c.NbInputs + 1] = t.position.z;
-                c.ExpectedResults[i] = -1.0;
+                c.ExpectedResults[i] = -1;
             }
         }
 
@@ -187,8 +187,12 @@ public class MyFirstScript : MonoBehaviour {
             double[] input = new double[2];
             input[0] = t.position.x;
             input[1] = t.position.z;
-            double val = classifyRegression(ptrModel, input, 2);            
+            double val = classifyRegression(ptrModel, input, 2);
+
+            //t.position = new Vector3(t.position.x, (float)val, t.position.z);
+
             val = (val + 1) / 2;
+
 
             mr.material.color = new Color((float)val, 0f, (float)(1.0 - val));
            
@@ -223,7 +227,7 @@ public class MyFirstScript : MonoBehaviour {
         model = createModelLinear(c.NbInputs+1);
         var c2 = createTrainingConfiguration2();
 
-        linearScenarioRegression(c2,model);
+       linearScenarioRegression(c2,model);
     }
 	
 	// Update is called once per frame

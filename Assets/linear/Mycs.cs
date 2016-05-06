@@ -94,7 +94,7 @@ public class Mycs : MonoBehaviour {
             }
         }
 
-        c.MaxIteration = 10000;
+        c.MaxIteration = 100000;
 
         return c;
     }
@@ -150,9 +150,10 @@ public class Mycs : MonoBehaviour {
     // Use this for initialization
     void Start () {
         var c = createTrainingConfiguration();
-        int[] input = new int[2];
+        int[] input = new int[3];
         input[0] = 2;
-        input[1] = 1;
+        input[1] = 5;
+        input[2] = 1;
         System.IntPtr model = createNetworkModel(input,2,c.NbInputs);
 
         ClassificationScenario(c, model);
