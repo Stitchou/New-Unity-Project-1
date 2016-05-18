@@ -2,7 +2,7 @@
 using System.Collections;
 using System.Runtime.InteropServices;
 
-public class Mycs : MonoBehaviour {
+public class main50 : MonoBehaviour {
 
 
     [DllImport("5a_AL1_firstDLL")]
@@ -83,14 +83,14 @@ public class Mycs : MonoBehaviour {
                 Transform t = targetTransforms[i].GetComponent<Transform>();
                 c.TrainingExemples[i * c.NbInputs] = t.position.x;
                 c.TrainingExemples[i * c.NbInputs + 1] = t.position.z;
-                c.ExpectedResults[i] = -1;
+                c.ExpectedResults[i] = 1;
             }
             if (mr.material.color == blueMat.color)
             {
                 Transform t = targetTransforms[i].GetComponent<Transform>();
                 c.TrainingExemples[i * c.NbInputs] = t.position.x;
                 c.TrainingExemples[i * c.NbInputs + 1] = t.position.z;
-                c.ExpectedResults[i] = 1;
+                c.ExpectedResults[i] = -1;
             }
         }
 
@@ -104,7 +104,7 @@ public class Mycs : MonoBehaviour {
         //printModel(model);
         int[] inputneuro = new int[2];
         inputneuro[0] = 2;
-        inputneuro[1] = 1;
+        inputneuro[1] = 3;
         trainMLP(c.TrainingExemples, c.NbInputs, c.NbElements, c.ExpectedResults, model,inputneuro,2, c.MaxIteration);
 
         //printModel(model);
@@ -126,8 +126,7 @@ public class Mycs : MonoBehaviour {
             input[1] = t.position.z;
             int[] inputneuro = new int[2];
             inputneuro[0] = 2;
-            inputneuro[1] = 1;
-
+            inputneuro[1] = 3;
 
             System.IntPtr output = classifyMLP(ptrModel, input, 2, inputneuro, 2);
 
@@ -137,10 +136,11 @@ public class Mycs : MonoBehaviour {
             Marshal.Copy(output, managedOutput, 0, 1);
             switch(managedOutput[0])
             {
-                case -1:
-                    mr.material.color = redMat.color;
-                    break;
                 case 1:
+                    mr.material.color = redMat.color;
+                    t.position += Vector3.up * 1;
+                    break;
+                case -1:
                     mr.material.color = blueMat.color;
                     break; 
             }
@@ -150,10 +150,9 @@ public class Mycs : MonoBehaviour {
     // Use this for initialization
     void Start () {
         var c = createTrainingConfiguration();
-        int[] input = new int[3];
+        int[] input = new int[4];
         input[0] = 2;
-        input[1] = 5;
-        input[2] = 1;
+        input[1] = 3;
         System.IntPtr model = createNetworkModel(input,2,c.NbInputs);
 
         ClassificationScenario(c, model);
